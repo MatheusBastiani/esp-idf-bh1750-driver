@@ -1,32 +1,41 @@
-# ESP-IDF CLion Template 🚀
+# ESP32 BH1750 Light Sensor Reader ☀️
 
-This repository is a C++ boilerplate template for embedded systems development using the ESP32 microcontroller family and the ESP-IDF framework. The environment comes pre-configured for the JetBrains CLion IDE with built-in support for FreeRTOS tasks.
+> 🚧 **Status do Projeto:** Em desenvolvimento inicial.
 
-## 🛠️ Technologies
-*   **Microcontroller:** ESP32 Family
+Este projeto tem como objetivo realizar a leitura de dados de luminosidade ambiente (em Lux) utilizando o sensor I2C **BH1750** e um microcontrolador **ESP32**. 
+
+O firmware está sendo desenvolvido inteiramente em **C++** utilizando o framework **ESP-IDF**, aproveitando recursos de orientação a objetos e o **FreeRTOS** para o gerenciamento da tarefa de leitura contínua.
+
+## 🧰 Stack Tecnológico
+*   **Placa:** ESP32 (Qualquer variante genérica)
+*   **Sensor:** Módulo BH1750FVI (I2C)
 *   **Framework:** ESP-IDF v5.x
-*   **Language:** C++
-*   **RTOS:** FreeRTOS
-*   **Build System:** CMake + Ninja
-*   **IDE:** JetBrains CLion
+*   **Linguagem:** C++17
+*   **Ambiente:** JetBrains CLion (gerado via template padrão)
 
-## 📋 Prerequisites
-Before cloning this template, ensure you have the following installed and configured on your system:
-1.  [ESP-IDF](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/index.html) successfully installed.
-2.  JetBrains CLion IDE.
-3.  The official "Espressif ESP-IDF" plugin installed within CLion.
+## 🔌 Conexões de Hardware (Pinout)
+A comunicação com o BH1750 é feita via protocolo I2C. Abaixo está a tabela de conexões padrão recomendada para o ESP32:
 
-## ⚙️ How to Use This Template
-1.  Click the green **"Use this template"** button on GitHub to generate your new repository.
-2.  Clone your newly created repository to your local machine.
-3.  Open the cloned folder in CLion.
-4.  Navigate to `File > Settings > Build, Execution, Deployment > CMake`.
-5.  Under the **Environment** section, add the necessary environment variables for your system:
-    *   `IDF_PATH`: The installation path of your ESP-IDF (e.g., `C:\esp\v6.0\esp-idf`).
-    *   `PYTHON`: The path to the Python executable inside the Espressif virtual environment.
-6.  Under **Toolchains**, ensure the `export.bat` (or `export.sh` for Linux/macOS) is set in the *Environment script* field.
-7.  Click **Reload CMake Project**.
+| Pino no BH1750 | Pino no ESP32 | Função |
+| :--- | :--- | :--- |
+| **VCC** | 3V3 | Alimentação (3.3V) |
+| **GND** | GND | Terra |
+| **SCL** | GPIO 22 | Clock do I2C |
+| **SDA** | GPIO 21 | Dados do I2C |
+| **ADD** | GND ou Não conectado | Define o endereço I2C (GND = `0x23`) |
 
-## 📁 Project Structure
-The main application logic and FreeRTOS tasks should be implemented in the core source file:
-`main/main.cpp`
+*Nota: O pino ADD conectado ao GND (ou flutuando na maioria dos módulos) define o endereço do sensor como `0x23`. Se conectado em 3.3V, o endereço muda para `0x5C`.*
+
+## 🚀 Como Executar
+Este projeto foi construído usando uma base pré-configurada para o CLion.
+1. Clone o repositório.
+2. Abra no CLion e certifique-se de que as variáveis de ambiente `IDF_PATH` e o `PYTHON` do ESP-IDF estão configurados na aba de opções do CMake.
+3. Configure o *Toolchain script* apontando para o seu `export.bat`.
+4. Faça o *Reload* do CMake e compile.
+
+## 📝 Roadmap de Desenvolvimento (To-Do)
+- [x] Inicializar repositório a partir do template CLion + ESP-IDF.
+- [ ] Criar a estrutura da classe C++ (ex: `BH1750.h` e `BH1750.cpp`).
+- [ ] Configurar os parâmetros do barramento I2C (`i2c_param_config` e `i2c_driver_install`).
+- [ ] Enviar comando de *Power On* e *Configuração de Resolução* para o sensor.
+- [ ] Criar uma task no FreeRTOS (`xTaskCreate`) para ler e imprimir os valores em Lux no terminal periodicamente.
