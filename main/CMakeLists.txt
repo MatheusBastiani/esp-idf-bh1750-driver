@@ -1,2 +1,2 @@
-idf_component_register(SRCS "generic_esp32.c"
+idf_component_register(SRCS "BH1750.c"
                     INCLUDE_DIRS ".")
